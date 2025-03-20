@@ -1,0 +1,61 @@
+1. We have created a simple application here to test the CI pipeline.
+2. Also, we have to create a folder named as ".github" and inside that we create another folder named as "workflows".
+3. Then we have to create yaml file named as ci.yaml where we are going to define the whole CI workflow.
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+name: CI Workflow   - This assigns a name to your workflow (CI Workflow). This name is just for reference and does not impact the execution.
+
+                The workflow runs on:
+                    - Pushes to the main branch.
+                    - Pull requests targeting the main branch.
+                This ensures that every new commit and PR gets tested before merging. Also, you can add any git action you wish like merging, commit, etc. you can even change the branches too here.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:  
+---- This tells us what kind of jobs that can be performed here. In our case here, we are just performing test job here. There are various other kinds of jobs that can also be performed here such as lint, build, deploy. lint job check for style violations or formatting issues. build job compile the application, generate artifacts, or prepare deployment packages. deploy job deploy the application to cloud platforms, servers, or container registries.
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest streamlit
+
+    - name: Run tests
+      run: |
+        pytest _test.py
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+Concept	Explanation :-
+
+CI/CD - Automates testing of new code to prevent errors before deployment.
+GitHub Actions - A CI/CD tool that automates workflows like testing and deployment.
+Triggers - Runs the workflow on push or pull_request to main.
+Jobs & Steps - Jobs define what runs, and steps are individual commands or actions. test, lint, build, deploy
+Setup Python - Ensures the correct Python version is installed.
+Install Dependencies - Installs required libraries for the project and testing.
+Run Tests - Executes pytest to check for errors.
+Optimization - Use caching, auto-discovering tests, and add a linter for best practices.
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+
